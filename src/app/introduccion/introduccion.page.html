@@ -3,7 +3,6 @@
         <ion-buttons slot="end">
             <ion-button color="primary" (click)="saltarTutorial()">Saltar</ion-button>
         </ion-buttons>
-        <ion-title>introduccion</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -11,16 +10,37 @@
     <ion-slides pager="true" [options]="slideOpts">
         <!-- Código para crear slides -->
         <ion-slide *ngFor="let slide of slides">
-            <img [src]="slide.image" class="slide-image" />
-            <h2 class="slide-title" [innerHTML]="slide.title"></h2>
-            <p [innerHTML]="slide.description"></p>
-        </ion-slide>
-        <!-- Ultimo Slide -->
-        <ion-slide>
-            <img src="assets/img/ica-slidebox-img-4.png" class="slide-image" />
-            <h2 class="slide-title">¿Listo para empezar?</h2>
-        </ion-slide>
-        <!-- Fin del último slide -->
 
+            <div class="slide-img-padding">
+                <ion-img [src]="slide.image"></ion-img>
+            </div>
+            <div>
+                <h3 [innerHTML]="slide.title"></h3>
+            </div>
+        </ion-slide>
     </ion-slides>
 </ion-content>
+
+
+<ion-footer>
+    <ion-grid fixed>
+        <ion-row>
+            <ion-col size="10" offset="1">
+                <ion-button color="primary" expand="full" shape="round" mode="ios" class="btn-primary">
+                    GET MY PLAN
+                    <link rel="manifest" href="./manifest.json">
+                </ion-button>
+            </ion-col>
+        </ion-row>
+        <ion-row>
+            <ion-col size="10" offset="1">
+                <ion-button expand="full" fill="clear">
+                    <ion-label color="dark">
+                        SIGN IN
+                    </ion-label>
+
+                </ion-button>
+            </ion-col>
+        </ion-row>
+    </ion-grid>
+</ion-footer>

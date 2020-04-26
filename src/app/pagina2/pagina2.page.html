@@ -1,0 +1,13 @@
+<ion-header [translucent]="true">
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>pagina2</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+    <ion-button expand="block" [routerLink]="['/pagina3']">Ir a pagina 3</ion-button>
+    <ion-button color="danger" expand="block" [routerLink]="['/home']">Ir al home</ion-button>
+</ion-content>

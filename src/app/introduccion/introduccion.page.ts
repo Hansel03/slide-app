@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AjustesService } from '../services/ajustes.service';
 
 @Component({
   selector: 'app-introduccion',
@@ -9,7 +10,7 @@ import { Router } from '@angular/router';
 export class IntroduccionPage implements OnInit {
   // Optional parameters to pass to the swiper instance. See http://idangero.us/swiper/api/ for valid options.
   slideOpts = {
-    initialSlide: 1,
+    initialSlide: 0,
     speed: 400,
   };
 
@@ -28,11 +29,14 @@ export class IntroduccionPage implements OnInit {
     },
   ];
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private ajustesService: AjustesService) {}
 
   ngOnInit() {}
 
   public saltarTutorial() {
+    this.ajustesService.ajustes.mostrarTutorial = false;
+    this.ajustesService.guardarStorage();
+
     this.router.navigate(['home']);
     this.router.resetConfig([
       {

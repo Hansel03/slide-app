@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AjustesService } from './services/ajustes.service';
 
 const routes: Routes = [
   {
@@ -11,6 +12,7 @@ const routes: Routes = [
     path: '',
     redirectTo: 'introduccion',
     pathMatch: 'full',
+    canActivate: [AjustesService],
   },
   {
     path: 'pagina2',
@@ -28,6 +30,7 @@ const routes: Routes = [
       import('./introduccion/introduccion.module').then(
         (m) => m.IntroduccionPageModule
       ),
+    canActivate: [AjustesService],
   },
 ];
 

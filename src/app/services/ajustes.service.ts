@@ -1,25 +1,30 @@
 import { Injectable } from '@angular/core';
 import { NativeStorage } from '@ionic-native/native-storage/ngx';
 import { Platform } from '@ionic/angular';
+import { Router, CanActivate } from '@angular/router';
 
 @Injectable({
   providedIn: 'root',
 })
-export class AjustesService {
+export class AjustesService implements CanActivate {
   public ajustes = {
     mostrarTutorial: true,
   };
 
   constructor(
     private nativeStorage: NativeStorage,
-    private platform: Platform
+    private platform: Platform,
+    private router: Router
   ) {}
 
-  public cargarStorage() {
+  private cargarStorage() {
     if (this.platform.is('cordova')) {
       // Dispositivo
-      this.nativeStorage.getItem('myitem').then(
-        (data) => console.log(data),
+      this.nativeStorage.getItem('ajustes').then(
+        (data) => {
+          console.log(data);
+          this.ajustes = JSON.parse(data);
+        },
         (error) => console.error(error)
       );
     } else {
@@ -33,18 +38,25 @@ export class AjustesService {
   public guardarStorage() {
     if (this.platform.is('cordova')) {
       // Dispositivo
-      this.nativeStorage
-        .setItem('myitem', {
-          property: 'value',
-          anotherProperty: 'anotherValue',
-        })
-        .then(
-          () => console.log('Stored item!'),
-          (error) => console.error('Error storing item', error)
-        );
+      this.nativeStorage.setItem('ajustes', JSON.stringify(this.ajustes)).then(
+        () => console.log('Stored item!'),
+        (error) => console.error('Error storing item', error)
+      );
     } else {
       // escritorio
       localStorage.setItem('ajustes', JSON.stringify(this.ajustes));
     }
+  }
+
+  canActivate() {
+    this.cargarStorage();
+    if (this.ajustes.mostrarTutorial) {
+      // logged in so return true
+      return true;
+    }
+
+    // not logged in so redirect to login page
+    this.router.navigate(['/home']);
+    return false;
   }
 }

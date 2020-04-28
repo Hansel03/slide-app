@@ -18,27 +18,34 @@ export class AjustesService implements CanActivate {
   ) {}
 
   private cargarStorage() {
-    if (this.platform.is('cordova')) {
-      // Dispositivo
-      this.nativeStorage.getItem('ajustes').then(
-        (data) => {
-          console.log(data);
-          this.ajustes = JSON.parse(data);
-        },
-        (error) => console.error(error)
-      );
-    } else {
-      // escritorio
-      if (localStorage.getItem('ajustes')) {
-        this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
+    return new Promise((resolve, reject) => {
+      if (this.platform.is('cordova')) {
+        // Dispositivo
+        this.nativeStorage.getItem('ajustes').then(
+          (data) => {
+            console.log('obteniendo data ' + data.mostrarTutorial);
+            console.log(data);
+            this.ajustes.mostrarTutorial = data.mostrarTutorial;
+
+            resolve(this.ajustes.mostrarTutorial);
+          },
+          (error) => console.error(error)
+        );
+      } else {
+        // escritorio
+        if (localStorage.getItem('ajustes')) {
+          this.ajustes = JSON.parse(localStorage.getItem('ajustes'));
+        }
+        resolve(this.ajustes.mostrarTutorial);
       }
-    }
+    });
   }
 
   public guardarStorage() {
+    this.ajustes.mostrarTutorial = false;
     if (this.platform.is('cordova')) {
       // Dispositivo
-      this.nativeStorage.setItem('ajustes', JSON.stringify(this.ajustes)).then(
+      this.nativeStorage.setItem('ajustes', this.ajustes).then(
         () => console.log('Stored item!'),
         (error) => console.error('Error storing item', error)
       );
@@ -48,15 +55,27 @@ export class AjustesService implements CanActivate {
     }
   }
 
-  canActivate() {
-    this.cargarStorage();
-    if (this.ajustes.mostrarTutorial) {
-      // logged in so return true
-      return true;
+  public limpiar() {
+    if (this.platform.is('cordova')) {
+      this.nativeStorage.clear();
+    } else {
+      localStorage.clear();
     }
+  }
 
-    // not logged in so redirect to login page
-    this.router.navigate(['/home']);
-    return false;
+  canActivate() {
+    // this.cargarStorage();
+    this.cargarStorage().then((data) => {
+      if (data) {
+        // logged in so return true
+        return true;
+      }
+
+      // not logged in so redirect to login page
+      this.router.navigate(['/home']);
+      return false;
+    });
+
+    return true;
   }
 }

@@ -34,7 +34,6 @@ export class IntroduccionPage implements OnInit {
   ngOnInit() {}
 
   public saltarTutorial() {
-    this.ajustesService.ajustes.mostrarTutorial = false;
     this.ajustesService.guardarStorage();
 
     this.router.navigate(['home']);

@@ -8,6 +8,6 @@
 </ion-header>
 
 <ion-content [fullscreen]="true">
-    <ion-button expand="block" [routerLink]="['/pagina3']">Ir a pagina 3</ion-button>
-    <ion-button color="danger" expand="block" [routerLink]="['/']">Ir al home</ion-button>
+    <ion-button expand="block" (click)="openAlert()">Ir a pagina 3</ion-button>
+    <ion-button color="danger" expand="block" [routerLink]="['/home']">Ir al home</ion-button>
 </ion-content>
